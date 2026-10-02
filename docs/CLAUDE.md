@@ -23,8 +23,19 @@ python -m http.server 8000   # 로컬 확인용 정적 서버, http://localhost:
 | `src/todo-store.js` | 상태 변경, 진행률 계산, 저장 형식 변환과 검증 | DOM, localStorage |
 | `src/todo-view.js` | 상태를 받아 화면 전체를 다시 그린다 | localStorage, 이벤트 |
 | `src/app.js` | 상태 보관, 이벤트 연결, localStorage 읽기와 쓰기 | 계산 규칙 |
+| `src/ui-prefs.js` | 다크 모드와 레이아웃 설정을 `<html>`의 `data-theme`, `data-layout`에 적용하고 `todoApp.ui`에 기억한다 | 할 일 데이터 |
+| `style.css` | 두 버전 공통 스타일과 다크 모드 색 | 배치 |
+| `desktop.css` | 데스크톱 버전의 2단, 1단 배치 | 색 |
 
 이 경계 덕분에 `todo-store.js`를 Node에서 그대로 테스트할 수 있다. 이 파일에 `document`나 `localStorage`를 들이지 않는다.
+
+## 두 버전은 코드를 함께 쓴다
+
+`index.html`(데스크톱, 기본 주소)과 `mobile_version/index.html`(모바일)은 같은 `src/`와 `style.css`를 불러온다. 모바일 쪽은 `../src/`, `../style.css`처럼 한 단계 위를 가리킨다.
+
+- **화면 요소의 id는 두 HTML에서 같아야 한다.** `todo-view.js`와 `app.js`가 `#todo-list`, `#tabs`, `#add-form` 같은 id로 요소를 찾는다. 한쪽 HTML에서 id를 바꾸면 그 버전만 말없이 동작하지 않는다.
+- **`ui-prefs.js`는 모듈이 아닌 일반 스크립트로 `<head>`에서 불러온다.** 모듈은 화면을 다 읽은 뒤에 실행되므로, 모듈로 바꾸면 다크 모드를 고른 사람에게 밝은 화면이 잠깐 비친다.
+- **다크 모드 색은 `style.css`에 두 번 적혀 있다.** 기기 설정을 따르는 `@media (prefers-color-scheme: dark)` 블록과, 사용자가 고른 `:root[data-theme="dark"]` 블록이다. 색을 바꿀 때는 두 곳을 함께 고친다.
 
 ## 건드리면 안 되는 것
 

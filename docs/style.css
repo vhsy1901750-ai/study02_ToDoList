@@ -12,6 +12,34 @@
   --work: #2563eb;
   --personal: #16a34a;
   --study: #9333ea;
+  color-scheme: light;
+}
+
+/* 다크 모드: 사용자가 고르지 않았으면 기기 설정을 따르고, 고르면 data-theme이 우선한다. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #16181d;
+    --surface: #22252b;
+    --text: #e6e8eb;
+    --muted: #9aa1ab;
+    --border: #3a3f47;
+    --danger: #ff7b7b;
+    --notice-bg: #3a2a12;
+    --notice-text: #f3c98b;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #16181d;
+  --surface: #22252b;
+  --text: #e6e8eb;
+  --muted: #9aa1ab;
+  --border: #3a3f47;
+  --danger: #ff7b7b;
+  --notice-bg: #3a2a12;
+  --notice-text: #f3c98b;
+  color-scheme: dark;
 }
 
 * {
@@ -35,6 +63,23 @@ body {
 h1 {
   margin: 0 0 16px;
   font-size: 1.75rem;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.app-header h1 {
+  margin: 0;
+}
+
+.toggles {
+  display: flex;
+  gap: 8px;
 }
 
 button,
@@ -65,6 +110,10 @@ select {
   border-radius: 8px;
   background: var(--surface);
   color: var(--text);
+}
+
+input::placeholder {
+  color: var(--muted);
 }
 
 .notice {
