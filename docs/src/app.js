@@ -13,8 +13,10 @@ import {
 } from "./todo-store.js";
 import { render, showNotice, fillCategoryOptions } from "./todo-view.js";
 
-const STORAGE_KEY = "todo-app";
-const BACKUP_KEY = "todo-app-backup";
+const STORAGE_KEY = "todoApp.v1";
+const BACKUP_KEY = "todoApp.v1.backup";
+// 저장 이름을 바꾸기 전에 쓰던 키. 처음 열 때 한 번 STORAGE_KEY로 옮긴다.
+const LEGACY_KEY = "todo-app";
 const CORRUPT_MESSAGE = "저장된 데이터를 읽지 못해 빈 목록으로 시작합니다.";
 const STORAGE_ERROR_MESSAGE = "변경 사항을 저장하지 못했습니다. 브라우저 저장소 설정을 확인해 주세요.";
 
@@ -35,8 +37,13 @@ function writeStorage(key, value) {
 
 function loadState() {
   let raw;
+  let fromLegacy = false;
   try {
     raw = localStorage.getItem(STORAGE_KEY);
+    if (raw === null) {
+      raw = localStorage.getItem(LEGACY_KEY);
+      fromLegacy = raw !== null;
+    }
   } catch {
     showNotice(STORAGE_ERROR_MESSAGE);
     return createInitialState();
@@ -45,6 +52,8 @@ function loadState() {
   if (error) {
     writeStorage(BACKUP_KEY, raw);
     showNotice(CORRUPT_MESSAGE);
+  } else if (fromLegacy && writeStorage(STORAGE_KEY, serializeState(loaded))) {
+    localStorage.removeItem(LEGACY_KEY);
   }
   return loaded;
 }
