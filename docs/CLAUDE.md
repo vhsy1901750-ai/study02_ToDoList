@@ -3,9 +3,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-브라우저에서 순수 자바스크립트로 동작하는 개인용 할 일 관리 앱이다. 빌드 단계 없이 저장소 루트를 그대로 GitHub Pages에 올린다. 무엇을 만들지는 `docs/PRD.md`에, 단계별 구현 지시문은 `docs/prompts.md`에 있다.
+브라우저에서 순수 자바스크립트로 동작하는 개인용 할 일 관리 앱이다. 앱과 문서는 모두 `docs/` 폴더에 있고, 빌드 단계 없이 이 폴더를 그대로 GitHub Pages에 올린다. 무엇을 만들지는 `PRD.md`에, 단계별 구현 지시문은 `prompts.md`에 있다.
 
 ## 명령어
+
+아래 명령은 모두 `docs/` 폴더에서 실행한다.
 
 ```bash
 npm test                     # 전체 테스트 (node --test, 의존성 없음)
@@ -53,6 +55,6 @@ localStorage의 `todo-app` 키에 `{ version: 1, todos, filter }`를 통째로 �
 
 ## 배포
 
-`main` 브랜치의 저장소 루트를 GitHub Pages가 그대로 서빙한다. 빌드 단계는 없다.
+GitHub Pages는 `main` 브랜치의 `docs/` 폴더를 그대로 서빙한다. 빌드 단계는 없다.
 
-로컬 테스트 통과는 배포 성공의 증거가 아니다. 배포가 끝나면 실제 주소를 PC와 휴대폰에서 열어 `docs/PRD.md` 8.2절 체크리스트를 다시 확인한다. Pages는 파일을 10분 동안 캐시하므로, 확인 전에 강력 새로고침(Ctrl+F5)을 한다.
+로컬 테스트 통과는 배포 성공의 증거가 아니다. 배포가 끝나면 실제 주소를 PC와 휴대폰에서 열어 `PRD.md` 8.2절 체크리스트를 다시 확인한다. Pages는 파일을 10분 동안 캐시하므로, 확인 전에 강력 새로고침(Ctrl+F5)을 한다.
