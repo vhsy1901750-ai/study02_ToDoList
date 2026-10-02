@@ -1,5 +1,15 @@
 // 2026-10-02 11:05 KST
-import { createInitialState, parseState, serializeState } from "./todo-store.js";
+import {
+  createInitialState,
+  parseState,
+  serializeState,
+  addTodo,
+  toggleTodo,
+  deleteTodo,
+  setFilter,
+  getVisibleTodos,
+  clearCompleted,
+} from "./todo-store.js";
 import { render, showNotice, fillCategoryOptions } from "./todo-view.js";
 
 const STORAGE_KEY = "todo-app";
@@ -47,6 +57,49 @@ function persist() {
 function defaultCategory(filter) {
   return filter === "all" ? "work" : filter;
 }
+
+function update(nextState) {
+  editingId = null;
+  if (nextState !== state) {
+    state = nextState;
+    persist();
+  }
+  render(state, editingId);
+}
+
+document.getElementById("add-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const titleInput = document.getElementById("add-title");
+  const nextState = addTodo(state, { title: titleInput.value, category: addCategory.value });
+  if (nextState !== state) titleInput.value = "";
+  update(nextState);
+  titleInput.focus();
+});
+
+document.getElementById("tabs").addEventListener("click", (event) => {
+  const tab = event.target.closest("[data-filter]");
+  if (!tab) return;
+  update(setFilter(state, tab.dataset.filter));
+  addCategory.value = defaultCategory(state.filter);
+});
+
+list.addEventListener("click", (event) => {
+  const target = event.target.closest("[data-action]");
+  if (!target) return;
+  const { action, id } = target.dataset;
+  if (action === "toggle") {
+    update(toggleTodo(state, id));
+  } else if (action === "delete") {
+    if (confirm("이 할 일을 삭제할까요?")) update(deleteTodo(state, id));
+  }
+});
+
+document.getElementById("clear-completed").addEventListener("click", () => {
+  const count = getVisibleTodos(state).filter((todo) => todo.done).length;
+  if (count > 0 && confirm(`완료한 할 일 ${count}개를 삭제할까요?`)) {
+    update(clearCompleted(state));
+  }
+});
 
 fillCategoryOptions(addCategory, defaultCategory(state.filter));
 render(state, editingId);
