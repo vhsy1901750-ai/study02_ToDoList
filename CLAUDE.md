@@ -3,7 +3,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-브라우저에서 순수 자바스크립트로 동작하는 개인용 할 일 관리 앱이다. 빌드 단계 없이 저장소 루트를 그대로 GitHub Pages에 올린다. 무엇을 만들지는 `docs/PRD.md`에, 만든 순서는 `docs/superpowers/plans/`에 있다.
+브라우저에서 순수 자바스크립트로 동작하는 개인용 할 일 관리 앱이다. 빌드 단계 없이 저장소 루트를 그대로 GitHub Pages에 올린다. 무엇을 만들지는 `docs/PRD.md`에, 단계별 구현 지시문은 `docs/prompts.md`에 있다.
 
 ## 명령어
 

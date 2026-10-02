@@ -55,7 +55,6 @@ npm test
 | --- | --- | --- |
 | [PRD](docs/PRD.md) | 기능, 화면 구성, 데이터 저장 방식, 오류 처리, 테스트, 완료 기준 | 무엇을 만들지 확인할 때 |
 | [prompts](docs/prompts.md) | PRD를 Claude Code에 붙여 넣어 쓸 수 있게 나눈 구현 프롬프트 5단계 | Claude Code로 앱을 처음부터 만들 때 |
-| [구현 계획](docs/superpowers/plans/2026-10-02-todo-app.md) | 8개 작업으로 나눈 상세 계획. 작업마다 코드, 테스트, 실행 명령 포함 | 실제로 만든 순서를 확인할 때 |
 
 모든 문서는 PRD를 기준으로 합니다. 내용이 서로 다르면 PRD를 따릅니다.
 
