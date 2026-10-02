@@ -60,3 +60,30 @@ export function deleteTodo(state, id) {
   if (!hasTodo(state, id)) return state;
   return { ...state, todos: state.todos.filter((todo) => todo.id !== id) };
 }
+
+export function setFilter(state, filter) {
+  if (!FILTERS.includes(filter)) return state;
+  return { ...state, filter };
+}
+
+function matchesFilter(todo, filter) {
+  return filter === "all" || todo.category === filter;
+}
+
+export function getVisibleTodos(state) {
+  return state.todos.filter((todo) => matchesFilter(todo, state.filter));
+}
+
+export function getProgress(state) {
+  const visible = getVisibleTodos(state);
+  const done = visible.filter((todo) => todo.done).length;
+  const total = visible.length;
+  const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+  return { done, total, percent };
+}
+
+export function clearCompleted(state) {
+  const remaining = state.todos.filter((todo) => !(todo.done && matchesFilter(todo, state.filter)));
+  if (remaining.length === state.todos.length) return state;
+  return { ...state, todos: remaining };
+}

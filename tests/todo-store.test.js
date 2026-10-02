@@ -9,6 +9,10 @@ import {
   updateTodo,
   toggleTodo,
   deleteTodo,
+  setFilter,
+  getVisibleTodos,
+  getProgress,
+  clearCompleted,
 } from "../src/todo-store.js";
 
 function todo(overrides = {}) {
@@ -124,5 +128,57 @@ test("updateTodo, toggleTodo, deleteTodo는 원본 상태를 바꾸지 않는다
   updateTodo(state, "a", { title: "회의", category: "study" });
   toggleTodo(state, "a");
   deleteTodo(state, "a");
+  assert.deepEqual(state, snapshot);
+});
+
+const mixed = [
+  todo({ id: "w1", category: "work", done: true }),
+  todo({ id: "p1", category: "personal", done: false }),
+  todo({ id: "w2", category: "work", done: false }),
+  todo({ id: "s1", category: "study", done: true }),
+];
+
+test("setFilter는 허용된 값으로 바꾸고, 아니면 상태를 그대로 반환한다", () => {
+  const state = stateWith([]);
+  assert.equal(setFilter(state, "study").filter, "study");
+  assert.equal(setFilter(state, "hobby"), state);
+});
+
+test("getVisibleTodos는 전체 필터면 모두, 카테고리 필터면 해당 항목만 순서대로 돌려준다", () => {
+  assert.deepEqual(getVisibleTodos(stateWith(mixed, "all")).map((t) => t.id), ["w1", "p1", "w2", "s1"]);
+  assert.deepEqual(getVisibleTodos(stateWith(mixed, "work")).map((t) => t.id), ["w1", "w2"]);
+  assert.deepEqual(getVisibleTodos(stateWith(mixed, "personal")).map((t) => t.id), ["p1"]);
+});
+
+test("getProgress는 할 일이 없으면 0%다", () => {
+  assert.deepEqual(getProgress(stateWith([])), { done: 0, total: 0, percent: 0 });
+});
+
+test("getProgress는 현재 필터 기준으로 계산하고 반올림한다", () => {
+  assert.deepEqual(getProgress(stateWith(mixed, "all")), { done: 2, total: 4, percent: 50 });
+  assert.deepEqual(getProgress(stateWith(mixed, "work")), { done: 1, total: 2, percent: 50 });
+  assert.deepEqual(getProgress(stateWith(mixed, "personal")), { done: 0, total: 1, percent: 0 });
+
+  const third = [todo({ id: "a", done: true }), todo({ id: "b" }), todo({ id: "c" })];
+  assert.equal(getProgress(stateWith(third)).percent, 33);
+  const twoThirds = [todo({ id: "a", done: true }), todo({ id: "b", done: true }), todo({ id: "c" })];
+  assert.equal(getProgress(stateWith(twoThirds)).percent, 67);
+});
+
+test("clearCompleted는 현재 필터의 완료 항목만 지운다", () => {
+  assert.deepEqual(clearCompleted(stateWith(mixed, "all")).todos.map((t) => t.id), ["p1", "w2"]);
+  assert.deepEqual(clearCompleted(stateWith(mixed, "work")).todos.map((t) => t.id), ["p1", "w2", "s1"]);
+});
+
+test("clearCompleted는 지울 항목이 없으면 상태를 그대로 반환한다", () => {
+  const state = stateWith(mixed, "personal");
+  assert.equal(clearCompleted(state), state);
+});
+
+test("setFilter, clearCompleted는 원본 상태를 바꾸지 않는다", () => {
+  const state = stateWith(mixed, "all");
+  const snapshot = structuredClone(state);
+  setFilter(state, "work");
+  clearCompleted(state);
   assert.deepEqual(state, snapshot);
 });
