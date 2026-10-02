@@ -13,6 +13,8 @@ import {
   getVisibleTodos,
   getProgress,
   clearCompleted,
+  serializeState,
+  parseState,
 } from "../src/todo-store.js";
 
 function todo(overrides = {}) {
@@ -182,3 +184,38 @@ test("setFilter, clearCompleted는 원본 상태를 바꾸지 않는다", () => 
   clearCompleted(state);
   assert.deepEqual(state, snapshot);
 });
+
+test("parseState는 저장값이 없으면 오류 없이 초기 상태를 돌려준다", () => {
+  assert.deepEqual(parseState(null), { state: createInitialState(), error: null });
+});
+
+test("serializeState와 parseState는 상태를 그대로 왕복한다", () => {
+  const state = stateWith([todo({ id: "a", done: true }), todo({ id: "b", category: "study" })], "study");
+  assert.deepEqual(parseState(serializeState(state)), { state, error: null });
+});
+
+const validJson = (override) =>
+  JSON.stringify({ version: 1, todos: [todo()], filter: "all", ...override });
+
+const corruptCases = [
+  ["JSON 문법 오류", "{"],
+  ["최상위가 null", "null"],
+  ["최상위가 배열", "[]"],
+  ["version이 다름", validJson({ version: 2 })],
+  ["todos가 배열이 아님", validJson({ todos: {} })],
+  ["filter가 허용 값이 아님", validJson({ filter: "hobby" })],
+  ["id가 빈 문자열", validJson({ todos: [todo({ id: "" })] })],
+  ["제목이 비어 있음", validJson({ todos: [todo({ title: "" })] })],
+  ["제목 앞뒤에 공백", validJson({ todos: [todo({ title: " 회의 " })] })],
+  ["제목이 101자", validJson({ todos: [todo({ title: "가".repeat(101) })] })],
+  ["카테고리가 허용 값이 아님", validJson({ todos: [todo({ category: "hobby" })] })],
+  ["done이 불리언이 아님", validJson({ todos: [todo({ done: "yes" })] })],
+  ["createdAt이 숫자가 아님", validJson({ todos: [todo({ createdAt: "어제" })] })],
+  ["할 일이 객체가 아님", validJson({ todos: ["회의"] })],
+];
+
+for (const [name, raw] of corruptCases) {
+  test(`parseState는 깨진 데이터를 감지한다: ${name}`, () => {
+    assert.deepEqual(parseState(raw), { state: createInitialState(), error: "corrupt" });
+  });
+}

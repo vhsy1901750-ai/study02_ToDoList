@@ -87,3 +87,45 @@ export function clearCompleted(state) {
   if (remaining.length === state.todos.length) return state;
   return { ...state, todos: remaining };
 }
+
+export function serializeState(state) {
+  return JSON.stringify(state);
+}
+
+function isPlainObject(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isValidTodo(todo) {
+  return (
+    isPlainObject(todo) &&
+    typeof todo.id === "string" &&
+    todo.id.length > 0 &&
+    normalizeTitle(todo.title) === todo.title &&
+    isCategory(todo.category) &&
+    typeof todo.done === "boolean" &&
+    Number.isFinite(todo.createdAt)
+  );
+}
+
+function isValidState(value) {
+  return (
+    isPlainObject(value) &&
+    value.version === VERSION &&
+    Array.isArray(value.todos) &&
+    value.todos.every(isValidTodo) &&
+    FILTERS.includes(value.filter)
+  );
+}
+
+export function parseState(raw) {
+  if (raw === null) return { state: createInitialState(), error: null };
+  let value;
+  try {
+    value = JSON.parse(raw);
+  } catch {
+    return { state: createInitialState(), error: "corrupt" };
+  }
+  if (!isValidState(value)) return { state: createInitialState(), error: "corrupt" };
+  return { state: { version: VERSION, todos: value.todos, filter: value.filter }, error: null };
+}
