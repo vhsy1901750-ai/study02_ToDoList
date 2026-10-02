@@ -4,6 +4,7 @@ import {
   parseState,
   serializeState,
   addTodo,
+  updateTodo,
   toggleTodo,
   deleteTodo,
   setFilter,
@@ -91,6 +92,31 @@ list.addEventListener("click", (event) => {
     update(toggleTodo(state, id));
   } else if (action === "delete") {
     if (confirm("이 할 일을 삭제할까요?")) update(deleteTodo(state, id));
+  } else if (action === "edit") {
+    editingId = id;
+    render(state, editingId);
+    list.querySelector(".edit-form input[name='title']").focus();
+  } else if (action === "cancel-edit") {
+    editingId = null;
+    render(state, editingId);
+  }
+});
+
+list.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const form = event.target;
+  const nextState = updateTodo(state, form.dataset.id, {
+    title: form.elements.title.value,
+    category: form.elements.category.value,
+  });
+  if (nextState === state) return;
+  update(nextState);
+});
+
+list.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && editingId !== null) {
+    editingId = null;
+    render(state, editingId);
   }
 });
 
