@@ -1,0 +1,29 @@
+<!doctype html>
+<!-- 2026-10-02 11:05 KST -->
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>할 일</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="src/app.js"></script>
+</head>
+<body>
+  <main class="app">
+    <h1>할 일</h1>
+    <p id="notice" class="notice" role="alert" hidden></p>
+    <section class="progress" aria-label="진행률">
+      <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+      <p id="progress-text" class="progress-text"></p>
+    </section>
+    <nav id="tabs" class="tabs" aria-label="카테고리"></nav>
+    <form id="add-form" class="add-form">
+      <input id="add-title" name="title" type="text" maxlength="100" placeholder="할 일을 입력하세요" aria-label="할 일 제목" autocomplete="off">
+      <select id="add-category" name="category" aria-label="카테고리"></select>
+      <button type="submit">추가</button>
+    </form>
+    <ul id="todo-list" class="todo-list"></ul>
+    <button id="clear-completed" type="button" class="clear-completed">완료 항목 정리</button>
+  </main>
+</body>
+</html>

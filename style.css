@@ -1,0 +1,201 @@
+/* 2026-10-02 11:05 KST */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --text: #1f2328;
+  --muted: #656d76;
+  --border: #d0d7de;
+  --accent: #2563eb;
+  --danger: #c62828;
+  --notice-bg: #fff4e5;
+  --notice-text: #8a4b00;
+  --work: #2563eb;
+  --personal: #16a34a;
+  --study: #9333ea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+  line-height: 1.5;
+}
+
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 1.75rem;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  min-height: 44px;
+}
+
+button {
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input[type="text"],
+select {
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.notice {
+  margin: 0 0 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--notice-bg);
+  color: var(--notice-text);
+}
+
+.progress-bar {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s;
+}
+
+.progress-text {
+  margin: 8px 0 16px;
+  color: var(--muted);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  flex: 1;
+  padding: 0 4px;
+}
+
+.tab[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.add-form,
+.edit-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.add-form {
+  margin-bottom: 16px;
+}
+
+.add-form input,
+.edit-form input {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.todo-list {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.todo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.todo input[type="checkbox"] {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  min-height: 0;
+  margin: 10px;
+}
+
+.todo-title {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.todo.done .todo-title {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.category {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 0.8rem;
+}
+
+.category-work {
+  background: var(--work);
+}
+
+.category-personal {
+  background: var(--personal);
+}
+
+.category-study {
+  background: var(--study);
+}
+
+.todo button {
+  flex: none;
+}
+
+.edit-form {
+  width: 100%;
+}
+
+.empty {
+  padding: 24px 0;
+  color: var(--muted);
+  text-align: center;
+}
+
+.clear-completed {
+  width: 100%;
+  color: var(--danger);
+}
