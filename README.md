@@ -7,7 +7,7 @@
 
 **https://vhsy1901750-ai.github.io/study02_ToDoList/**
 
-PC와 휴대폰 브라우저 모두에서 쓸 수 있습니다. (GitHub Pages 배포를 마친 뒤부터 열립니다.)
+PC와 휴대폰 브라우저 모두에서 쓸 수 있습니다.
 
 ## 이렇게 씁니다
 
