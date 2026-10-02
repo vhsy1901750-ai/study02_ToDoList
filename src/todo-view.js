@@ -82,6 +82,10 @@ function createTodoItem(todo) {
   checkbox.dataset.id = todo.id;
   checkbox.setAttribute("aria-label", `${todo.title} 완료`);
 
+  const toggle = document.createElement("label");
+  toggle.className = "toggle";
+  toggle.append(checkbox);
+
   const title = document.createElement("span");
   title.className = "todo-title";
   title.textContent = todo.title;
@@ -91,7 +95,7 @@ function createTodoItem(todo) {
   category.textContent = CATEGORIES[todo.category];
 
   item.append(
-    checkbox,
+    toggle,
     title,
     category,
     createActionButton("수정", "edit", todo.id),
