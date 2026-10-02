@@ -7,7 +7,7 @@
 
 **https://vhsy1901750-ai.github.io/study02_ToDoList/**
 
-PC와 휴대폰 브라우저 모두에서 쓸 수 있습니다.
+PC와 휴대폰 브라우저 모두에서 쓸 수 있습니다. (GitHub Pages 배포를 마친 뒤부터 열립니다.)
 
 ## 이렇게 씁니다
 
@@ -49,7 +49,14 @@ npm test
 
 화면 동작은 [PRD](docs/PRD.md) 8.2절의 체크리스트로 직접 확인합니다.
 
-## 문서
+## 문서 안내
 
-- [docs/PRD.md](docs/PRD.md): 무엇을 만들지 정한 요구사항과 설계
-- [docs/superpowers/plans/2026-10-02-todo-app.md](docs/superpowers/plans/2026-10-02-todo-app.md): 실제로 만든 순서를 담은 구현 계획
+| 문서 | 무엇이 들어 있나요 | 이럴 때 보세요 |
+| --- | --- | --- |
+| [PRD](docs/PRD.md) | 기능, 화면 구성, 데이터 저장 방식, 오류 처리, 테스트, 완료 기준 | 무엇을 만들지 확인할 때 |
+| [prompts](docs/prompts.md) | PRD를 Claude Code에 붙여 넣어 쓸 수 있게 나눈 구현 프롬프트 5단계 | Claude Code로 앱을 처음부터 만들 때 |
+| [구현 계획](docs/superpowers/plans/2026-10-02-todo-app.md) | 8개 작업으로 나눈 상세 계획. 작업마다 코드, 테스트, 실행 명령 포함 | 실제로 만든 순서를 확인할 때 |
+
+모든 문서는 PRD를 기준으로 합니다. 내용이 서로 다르면 PRD를 따릅니다.
+
+[prompts](docs/prompts.md)는 프로젝트 준비와 할 일 로직, 저장 형식과 데이터 검증, 화면 구성과 렌더링, 사용자 동작 연결, 전체 점검과 배포의 다섯 단계로 나뉘어 있습니다. 한 번에 한 단계씩 붙여 넣고, 단계마다 적힌 완료 확인 항목을 확인한 뒤 다음 단계로 넘어가 주세요.
